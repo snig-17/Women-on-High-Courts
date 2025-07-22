@@ -30,7 +30,8 @@ Don't change any code in this section!
 How many total countries total are in the database? */
 .print '### CA1 - Total number of countries in the database:'
 
-select 'Replace this query with your own!';
+select count(distinct country) from wohc;
+
   
 .print ''
 
