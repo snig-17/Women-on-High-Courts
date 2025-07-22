@@ -49,24 +49,45 @@ select country, count(*)
 There's a data anomaly in the year_first_woman column for the United States. Can you spot it and fix it? */
 .print '### CA3 - Fixing the data anomaly in the year_first_woman data for the United States:'
 
-select 'Replace this query with your own!';
+select distinct year_first_woman, count(*)
+  from wohc
+  where country = 'United States'
+  group by year_first_woman;
 
+select distinct year_first_woman, count(*)
+  from wohc
+  where country = 'United States' and year_first_woman != 1981;
+
+select distinct year_first_woman, count(*)
+from wohc
+where country = 'United States'
+group by year_first_woman;
 
 .print ''
 
 /* Code-along 4.1: -------------------------
 What is the mean year that a woman first joined a high court across all countries? */
-.print '### CA4.1 - Mean year of first woman on high court:'
+.print '### CA4.1 - Mean year of first woman on high court:' 
 
-select 'Replace this query with your own!';
 
+select cast(avg(year_first_woman) as int) from (
+  select country, min(year_first_woman) as year_first_woman
+  from wohc
+  group by country) as deduped;
+  
 .print ''
 
 /* Code-along 4.2: -------------------------
 That number doesn't seem quite right. Look at the values in the year_first_woman column and try to understand why we got that value. */
 .print '### CA4.2 - What was the value from 3.1? Why is it unexpected?'
+  update wohc
+  set year_first_woman = 
+  case
+    when year_first_woman in ('NA', 'none as of 2020')
+      then null;
+    else year_first_woman
 
-select 'Replace this query with your own!';
+select distinct (year_first_woman) from wohc;
 
 .print ''
 
@@ -74,7 +95,14 @@ select 'Replace this query with your own!';
 How can we change or exclude values that might be contributing to the unexpected value? */
 .print '### CA4.3 - Correcting the values in the year_first_woman column. Mean year of first woman on high court across countries:'
 
-select 'Replace this query with your own!';
+update wohc
+  set year_first_woman = 
+  case
+    when year_first_woman in ('NA', 'none as of 2020')
+      then null;
+    else year_first_woman
+
+      
 
 .print ''
 
@@ -83,7 +111,21 @@ select 'Replace this query with your own!';
 What is the median year that a woman first joined a high court across all countries? */
 .print '### CA5 - Median year of first woman on high court across countries:'
 
-select 'Replace this query with your own!';
+create table country_level as
+      select country, min(year_first_woman) as year_first_woman_dedup
+      from wohc
+      where year_first_woman is not null
+      group by country
+      order by year_first_woman_dedup;
+
+select count(*) from country_level;
+
+select cast(avg(year_first_woman_dedup) as int) as median_year_first_woman
+  from(
+  select year_first_woman_dedup
+  from country_level
+  limit 2 offset(select count(*)/2 - 1) from country_level)
+  );
 
 .print ''
 
@@ -91,13 +133,21 @@ select 'Replace this query with your own!';
 What is the most common (mode) year that a woman first joined a high court across all countries? */
 .print '### CA6 - Mode year of first woman on high court across countries:'
 
-select 'Replace this query with your own!';
+select year_first_woman_dedup, count(*)
+  from (
+  select country, min(year_first_woman) as year_first_woman_dedup
+  from wohc
+  group by country
+  )
+  where year_first_woman_dedup is not null
+  group by year_first_woman_dedup
+  order by count(*) desc;
 
 .print ''
 
 /* Code-along 7: -------------------------
 The cow_code column isn't very useful for our needs. Let's drop it. */
-.print '### CA6 - Drop the cow_code column:'
+.print '### CA7 - Drop the cow_code column:'
 
 select 'Replace this query with your own!';
 
