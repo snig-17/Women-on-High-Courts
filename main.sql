@@ -24,12 +24,7 @@ Don't change any code in this section!
 
 /* Code-along 0:
   Open the file `import_data.sql` and add a line to import the wohc.csv data. Delete the following 5 lines when this is done. */
-.print '!!!!!!! ERROR !!!!!!!!'
-.print '!!!!!!! ERROR !!!!!!!!'
-.print '!!! wohc.csv might not have been imported yet !!!'
-.print '!!!!!!! ERROR !!!!!!!!'
-.print '!!!!!!! ERROR !!!!!!!!'
-.print ''
+
 
 /* Code-along 1: -------------------------
 How many total countries total are in the database? */
