@@ -39,7 +39,9 @@ select count(distinct country) from wohc;
 Do all countries have the same number of rows? */
 .print '### CA2 - Record count by country:'
 
-select 'Replace this query with your own!';
+select country, count(*)
+  from wohc group by country
+  order by count(*) desc;
 
 .print ''
 
