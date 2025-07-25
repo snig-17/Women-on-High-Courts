@@ -149,7 +149,8 @@ select year_first_woman_dedup, count(*)
 The cow_code column isn't very useful for our needs. Let's drop it. */
 .print '### CA7 - Drop the cow_code column:'
 
-select 'Replace this query with your own!';
+alter table wohc drop column cow_code;
+select * from wohc limit 1;
 
 .print ''
 
@@ -157,7 +158,9 @@ select 'Replace this query with your own!';
 Pick a country. Print the first year a woman was on the high court for that country. */
 .print '### TI1 - The first year a woman was on the high court in _________:'
 
-select 'Replace this query with your own!';
+select min(year_first_woman) 
+  from wohc
+  where country = 'Canada';
 
 
 .print ''
@@ -171,7 +174,15 @@ In order to determine the appropriate value, you'll need to do 2 things:
 */
 .print '### TI2 - Fixing the court_type anomaly:'
 
-select 'Replace this query with your own!';
+  select distinct country from wohc where court_type ='';
+select distinct court_type from wohc order by court_type;
+
+update wohc
+  set court_type = 'SUP'
+  where country ='Ireland';
+
+select distinct country from wohc where court_type ='';
+
   
 .print ''
 
